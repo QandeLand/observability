@@ -56,3 +56,6 @@ curl http://localhost:5000/error
 # Stop
 docker compose down
 ```
+## Dashboard Screenshot
+
+![Observability Dashboard](dashboard.png)
