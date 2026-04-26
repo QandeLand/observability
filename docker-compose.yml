@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  app:
+    build: ./app
+    container_name: obs-app
+    ports:
+      - "5000:5000"
+    environment:
+      OTEL_SERVICE_NAME: observability-demo
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
+    depends_on:
+      - otel-collector
+    restart: unless-stopped
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.99.0
+    container_name: obs-otelcol
+    command: ["--config=/etc/otelcol-contrib/config.yaml"]
+    volumes:
+      - ./otel-collector/config.yaml:/etc/otelcol-contrib/config.yaml
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+      - "13133:13133"
+    environment:
+      GRAFANA_OTLP_ENDPOINT: ${GRAFANA_OTLP_ENDPOINT}
+      GRAFANA_BASIC_AUTH: ${GRAFANA_BASIC_AUTH}
+    restart: unless-stopped
