@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   app:
     build: ./app
@@ -23,7 +21,6 @@ services:
       - "4317:4317"
       - "4318:4318"
       - "13133:13133"
-    environment:
-      GRAFANA_OTLP_ENDPOINT: ${GRAFANA_OTLP_ENDPOINT}
-      GRAFANA_BASIC_AUTH: ${GRAFANA_BASIC_AUTH}
+    env_file:
+      - .env
     restart: unless-stopped
